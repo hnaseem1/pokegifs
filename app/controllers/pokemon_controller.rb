@@ -24,11 +24,12 @@ class PokemonController < ApplicationController
       # if params is the name of pokemon the url would be the params
         @pokemon_data.each do |pokemon|
 
-        if pokemon["name"] == params[:id]
+        if pokemon["name"].downcase == params[:id].downcase
           @pokemon_hash["id"] = pokemon["id"]
           @pokemon_hash["name"] = pokemon["name"]
           @pokemon_hash["type"] = pokemon["type"]
           @pokemon_hash["url"] = HTTParty.get("https://api.giphy.com/v1/gifs/search?api_key=#{api_key}&q=#{pokemon["name"]}&limit=25&offset=0&rating=G&lang=en")["data"][0]["url"]
+        else
 
         end
       end
@@ -51,7 +52,7 @@ class PokemonController < ApplicationController
 
       respond_to do |format|
 
-        format.html {render :show}
+        format.html {render }
         format.json {render json: {
             id: @pokemon_hash["id"],
             name: @pokemon_hash["name"],
